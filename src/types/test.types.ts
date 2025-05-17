@@ -1,34 +1,42 @@
 export interface Test {
-    id: string;
+    id: number;
     name: string;
-    questions: Question[];
+}
+export interface Question { 
+    id: number;
+    testId: number;
+    question: string;
 }
 
-export interface Question {
-    id: string;
-    text: string;
+export interface QuestionWithAnswers extends Question { //???
     answers: Answer[];
 }
 
 export interface Answer {
-    id: string;
-    text: string;
-    isCorrect: boolean;
+    id: number;
+    questionId: number;
+    answer: string;
 }
 
 export interface TestInstance {
     id: string;
     user: string;
-    testId: string;
-    answers: Answer[];
+    testId: number;
+    answers: UserAnswer[];
+    finished: boolean;
 }
 
-export interface UserAnswer {
-    questionId: string;
-    answerId: string;
+export interface UserAnswer extends Answer {
+    userAnswerId: number;//???
+    correctAnswerId?: number;
 }
 
 export interface UserTests {
     user: string;
     testInstances: TestInstance[];
+}
+
+export interface CorrectAnswer {
+    correctAnswerId: number;
+    questionId: number;
 }
