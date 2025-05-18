@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
-import {
-    useTests,
-    useTestsActions,
-} from "../../hooks/useTestsStore";
+import { useTests, useTestsActions } from "../../hooks/useTestsStore";
 import data from "../../mockTests/tests.json";
 import { useNavigate } from "react-router";
 import { useSetUser, useUser } from "../../hooks/useUserStore";
+import { useTestInstanceActions } from "../../hooks/useTestInstanceStore";
+import { useTestsHistoryActions } from "../../hooks/useTestsHistoryStore";
 
 export const StartTestPage = () => {
     const navigate = useNavigate();
@@ -15,7 +14,9 @@ export const StartTestPage = () => {
     const tests = useTests();
     const user = useUser();
     const setUser = useSetUser();
-    const { addTestInstance, setTests } = useTestsActions();
+    const { setTests } = useTestsActions();
+    const { setCurrentInstance } = useTestInstanceActions();
+    const { setTestInstances } = useTestsHistoryActions();
     const [selectedTest, setSelectedTest] = useState<number | undefined>(
         undefined
     );
@@ -26,10 +27,11 @@ export const StartTestPage = () => {
                 id: uuid(),
                 user: user,
                 testId: selectedTest,
-                answers: [],
+                questions: [],
                 finished: false,
             };
-            addTestInstance(testInstance);
+            setCurrentInstance(testInstance);
+            setTestInstances(testInstance);
             navigate(`/test-instance/${testInstance.id}`);
         }
     };
@@ -63,7 +65,10 @@ export const StartTestPage = () => {
                     setSelectedTest(e ? Number(e.target.value) : undefined);
                 }}
             >
-                <option selected value={undefined}> -- select a test -- </option>
+                <option selected value={undefined}>
+                    {" "}
+                    -- select a test --{" "}
+                </option>
                 {tests.map((test) => (
                     <option key={test.id} value={test.id}>
                         {test.name}

@@ -1,13 +1,14 @@
-import { useEffect, useMemo } from "react";
-import { useParams } from "react-router";
-import { useTestInstances, useTestsActions } from "../../hooks/useTestsStore";
+import { useEffect, useMemo, useRef } from "react";
 import { useUser } from "../../hooks/useUserStore";
+import { useCurrentTestInstance } from "../../hooks/useTestInstanceStore";
+import { useTestsHistoryActions } from "../../hooks/useTestsHistoryStore";
 
 export const EndTestPage = () => {
-    const { instanceId } = useParams();
+    const renderCount = useRef(0);
+    renderCount.current += 1;
+    const testInstance = useCurrentTestInstance();
+    const { setTestInstances } = useTestsHistoryActions();
     const user = useUser();
-    const testInstances = useTestInstances();
-    const { getCurrentTestInstance } = useTestsActions();
     const { totalQuestions, correctAnswers } = useMemo((): {
         totalQuestions: number;
         correctAnswers: number;
@@ -16,27 +17,31 @@ export const EndTestPage = () => {
             totalQuestions: 0,
             correctAnswers: 0,
         };
-        if (!instanceId) return defaultValues;
-        const testInstance = getCurrentTestInstance(instanceId);
         if (!testInstance) return defaultValues;
-        const correctAnswers = testInstance.answers.filter(
-            (answer) => answer.correctAnswerId === answer.userAnswerId
+        console.log(testInstance);
+        const correctAnswers = testInstance.questions.filter(
+            (question) =>
+                question.result?.userAnswerId ===
+                question.result?.correctAnswerId
         );
         return {
-            totalQuestions: testInstance.answers.length ?? 0,
+            totalQuestions: testInstance.questions.length ?? 0,
             correctAnswers: correctAnswers.length ?? 0,
         };
-    }, [testInstances, instanceId]);
+    }, [testInstance]);
 
     useEffect(() => {
-        // Logic to handle the end of the test
-    }, []);
+        if (!testInstance) return;
+        setTestInstances(testInstance);
+    }, [testInstance, setTestInstances]);
 
     return (
         <div>
+            <p>rerender count: {renderCount.current}</p>
             <h1>Thank you, {user}!</h1>
             <p>
-                You have answered correctly {correctAnswers} out of {totalQuestions} questions.
+                You have answered correctly {correctAnswers} out of{" "}
+                {totalQuestions} questions.
             </p>
         </div>
     );

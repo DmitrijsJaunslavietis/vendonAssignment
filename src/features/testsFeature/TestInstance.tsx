@@ -1,44 +1,34 @@
 import { useEffect, useState } from "react";
 import data from "../../mockTests/tests.json";
-import {
-    useQuestions,
-    useTestInstances,
-    useTestsActions,
-} from "../../hooks/useTestsStore";
 import { useNavigate, useParams } from "react-router";
-import type {
-    QuestionWithAnswers,
-} from "../../types/test.types";
+import type { Question } from "../../types/test.types";
+import {
+    useCurrentTestInstance,
+    useTestInstanceActions,
+} from "../../hooks/useTestInstanceStore";
 
 export const TestInstance = () => {
     const navigate = useNavigate();
     const { instanceId } = useParams();
-    const questions = useQuestions();
-    const testInstances = useTestInstances();
-    const {
-        setQuestions,
-        setAnswer,
-        setCorrectAnswers,
-        getCurrentTestInstance,
-    } = useTestsActions();
+    const testInstance = useCurrentTestInstance();
+    const { setQuestions, setAnswer, setCorrectAnswers } =
+        useTestInstanceActions();
     const [questionIndex, setQuestionIndex] = useState<number>(0);
     const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(
         undefined
     );
+    const questions = testInstance?.questions ?? [];
 
     const submitTestHandle = () => {
         submitAnswerHandle();
-        if (!instanceId) return;
+        const testId = testInstance?.testId;
         //get correct answers from API
-        const testId = testInstances.find(
-            (instance) => instance.id === instanceId
-        )?.testId;
         const correctAnswers = data
             .find((test) => test.id === testId)
             ?.questions.map((question) => ({
-                correctAnswerId: question.answers.find(
-                    (answer) => answer.isCorrect
-                )?.id ?? 0,
+                correctAnswerId:
+                    question.answers.find((answer) => answer.isCorrect)?.id ??
+                    0,
                 questionId: question.id,
             }));
         // API call end
@@ -48,37 +38,27 @@ export const TestInstance = () => {
             navigate(-1);
             return;
         }
-        setCorrectAnswers(instanceId, correctAnswers);
+        console.log("correctAnswers", correctAnswers);
+        setCorrectAnswers(correctAnswers);
         navigate(`/test-instance/${instanceId}/end`);
     };
 
     const submitAnswerHandle = () => {
-        if (selectedAnswer && instanceId) {
-            const answer = questions[questionIndex].answers.find(
-                (answer) => answer.id === selectedAnswer
-            );
-            if (!answer) return;
-            setAnswer(instanceId, {
-                id: selectedAnswer,
-                questionId: questions[questionIndex].id,
-                answer: answer.answer,
-                userAnswerId: selectedAnswer,
-            });
+        if (selectedAnswer && testInstance) {
+            setAnswer(questions[questionIndex].id, selectedAnswer);
         }
     };
 
     useEffect(() => {
         const fetchQuestions = () => {
-            if (!instanceId) return;
-            const currentTestInstance = getCurrentTestInstance(instanceId);
-            if (!currentTestInstance) return;
-            if (currentTestInstance.finished) {
+            if (!testInstance) return;
+            if (testInstance.finished) {
                 navigate(-1);
                 return;
-            };
-            const { testId } = currentTestInstance;
+            }
+            const { testId } = testInstance;
             // API call by testId start
-            let questionsWithAnswers: QuestionWithAnswers[] | [] = [];
+            let questionsWithAnswers: Question[] | [] = [];
             const questionsData = data.find(
                 (test) => test.id === testId
             )?.questions;
@@ -99,7 +79,7 @@ export const TestInstance = () => {
             setQuestions(questionsWithAnswers);
         };
         fetchQuestions();
-    }, [setQuestions]);
+    }, []);
 
     return (
         <div>
