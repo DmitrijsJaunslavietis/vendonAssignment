@@ -36,9 +36,9 @@ export const EndTestPage = () => {
     }, [testInstance, setTestInstances]);
 
     return (
-        <div>
+        <div className="max-w-[600px] mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
             <p>rerender count: {renderCount.current}</p>
-            <h1>Thank you, {user}!</h1>
+            <h1 className="mb-4 text-3xl">Thank you, {user}!</h1>
             <p>
                 You have answered correctly {correctAnswers} out of{" "}
                 {totalQuestions} questions.
