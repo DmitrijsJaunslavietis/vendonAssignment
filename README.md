@@ -1,54 +1,95 @@
-# React + TypeScript + Vite
+# Vendon assignment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple test system in which the user enters their name, chooses a test, executes
+it, and at the end sees their result.
 
-Currently, two official plugins are available:
+## Main used tech stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* react
+* typescript
+* zustand (state management)
+* tailwindcss
 
-## Expanding the ESLint configuration
+## Overview
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The test consists of 3 different views:
+1) Homepage - the user enters their name and chooses one of the available tests
+2) Test question view - each question has answer options. One of them is correct.
+3) Result view - the user sees their result.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Application flow
+
+App uses mock test data from tests.json file. Every request for this data is commented with start and end of block, where API function needs to be implemented in the future.
+
+As this application will serve as testing app, the main aspect for data modeling i used, were restriction for test sensitive data to be available before and while test is in progress.
+
+Full tests mock data structure:
+
+```
+{
+    "id": number,
+    "name": string,
+    "questions": [
+        {
+            "id": number,
+            "question": string,
+            "answers": [
+                {
+                    id": number,
+                    "answer": string,
+                    "isCorrect": boolean
+                },
+                ...
+            ]
+        },
+        ...
+    ]
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Start test page
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+On starting page users have only tests to chose from, this implementation prevents users from accessing questions and answers as well.
+```
+Test {
+    id: number;
+    name: string;
+}
+```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### Test instance page
+
+Test instance provides all questions and answers but without correct answer flag, this implementation prevents users from accessing correct answer information.
+
+```
+Test {
+    id: number;
+    name: string;
+}
+
+Question { 
+    id: number;
+    testId: number;
+    question: string;
+    answers: Answer[];
+}
+
+Answer {
+    id: number;
+    questionId: number;
+    answer: string;
+}
+
+TestInstance {
+    id: string;
+    user: string;
+    testId: number;
+    answers: UserAnswer[];
+    finished: boolean;
+}
+
+UserAnswer extends Answer {
+    userAnswerId: number;
+    correctAnswerId?: number;
+}
 ```
