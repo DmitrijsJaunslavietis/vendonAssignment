@@ -6,6 +6,10 @@ import { useNavigate } from "react-router";
 import { useSetUser, useUser } from "../../hooks/useUserStore";
 import { useTestInstanceActions } from "../../hooks/useTestInstanceStore";
 import { useTestsHistoryActions } from "../../hooks/useTestsHistoryStore";
+import { TextInput } from "../../components/TextInput";
+import { Select } from "../../components/Select";
+import { ErrorBadge } from "../../components/ErrorBadge";
+import { Button } from "../../components/Button";
 
 export const StartTestPage = () => {
     const navigate = useNavigate();
@@ -20,8 +24,11 @@ export const StartTestPage = () => {
     const [selectedTest, setSelectedTest] = useState<number | undefined>(
         undefined
     );
+    const [error, setError] = useState<string | undefined>(undefined);
+    const [loading, setLoading] = useState(false);
 
     const handleStartTest = () => {
+        setLoading(true);
         if (selectedTest && user) {
             const testInstance = {
                 id: uuid(),
@@ -33,51 +40,52 @@ export const StartTestPage = () => {
             setCurrentInstance(testInstance);
             setTestInstances(testInstance);
             navigate(`/test-instance/${testInstance.id}`);
+        } else {
+            setError("Please select a test and enter your name.");
         }
+        setLoading(false);
     };
 
     useEffect(() => {
+        setLoading(true);
         const fetchTests = () => {
             const testsData = data.map((test) => ({
                 id: test.id,
                 name: test.name,
             }));
             setTests(testsData);
+            setLoading(false);
         };
         fetchTests();
     }, [setTests]);
 
     return (
-        <div className="start-test-page">
-            <h1>Start Test</h1>
-            <p>rerender count: {renderCount.current}</p>
-            <input
-                type="text"
-                placeholder="name"
-                value={user}
-                onChange={(e) => {
-                    setUser(e.target.value);
-                }}
-            />
-            <select
-                value={selectedTest}
-                onChange={(e) => {
-                    setSelectedTest(e ? Number(e.target.value) : undefined);
-                }}
-            >
-                <option selected value={undefined}>
-                    {" "}
-                    -- select a test --{" "}
-                </option>
-                {tests.map((test) => (
-                    <option key={test.id} value={test.id}>
-                        {test.name}
-                    </option>
-                ))}
-            </select>
-            <button type="button" onClick={handleStartTest}>
-                Start Test
-            </button>
+        <div className="max-w-[360px] mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
+            <h1 className="mb-4 text-3xl">Testing app</h1>
+            {/* <p>rerender count: {renderCount.current}</p> */}
+            <div className="flex flex-col gap-5">
+                <TextInput
+                    label="Enter your name:"
+                    type="text"
+                    value={user}
+                    onChange={(e) => {
+                        setError(undefined);
+                        setUser(e.target.value);
+                    }}
+                />
+                <Select
+                    label="Select a test:"
+                    options={tests}
+                    onChange={(e) => {
+                        setError(undefined);
+                        setSelectedTest(Number(e.target.value));
+                    }}
+                />
+                {error && <ErrorBadge error={error} />}
+                <Button onClick={handleStartTest} disabled={loading}>
+                    Start Test
+                </Button>
+            </div>
         </div>
     );
 };

@@ -6,6 +6,8 @@ import {
     useCurrentTestInstance,
     useTestInstanceActions,
 } from "../../hooks/useTestInstanceStore";
+import { Button } from "../../components/Button";
+import { AnswerButton } from "../../components/AnswerButton";
 
 export const TestInstance = () => {
     const navigate = useNavigate();
@@ -46,6 +48,7 @@ export const TestInstance = () => {
     const submitAnswerHandle = () => {
         if (selectedAnswer && testInstance) {
             setAnswer(questions[questionIndex].id, selectedAnswer);
+            setSelectedAnswer(undefined);
         }
     };
 
@@ -82,36 +85,39 @@ export const TestInstance = () => {
     }, []);
 
     return (
-        <div>
-            <h1>{questions[questionIndex]?.question}</h1>
-            {questions[questionIndex]?.answers.map((answer) => (
-                <div key={answer.id}>
-                    <input
-                        type="radio"
-                        name="answer"
-                        value={answer.answer}
-                        onChange={() => {
+        <div className="mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
+            <h1 className="mb-4 text-xl">
+                {questions[questionIndex]?.question}
+            </h1>
+            <div className="column-1 mb-10">
+                {questions[questionIndex]?.answers.map((answer) => (
+                    <AnswerButton
+                        selected={selectedAnswer === answer.id}
+                        text={answer.answer}
+                        onClick={() => {
                             setSelectedAnswer(answer.id);
                         }}
-                        checked={answer.id === selectedAnswer}
+                        key={answer.id}
                     />
-                    <label htmlFor={answer.answer}>{answer.answer}</label>
-                </div>
-            ))}
-            <button
-                onClick={() => {
-                    if (questionIndex < questions.length - 1) {
-                        submitAnswerHandle();
-                        setQuestionIndex(questionIndex + 1);
-                    } else {
-                        submitTestHandle();
-                    }
-                }}
-            >
-                {questionIndex < questions.length - 1
-                    ? "Next Question"
-                    : "Finish Test"}
-            </button>
+                ))}
+            </div>
+            <div className="flex justify-end">
+                <Button
+                    onClick={() => {
+                        if (questionIndex < questions.length - 1) {
+                            submitAnswerHandle();
+                            setQuestionIndex(questionIndex + 1);
+                        } else {
+                            submitTestHandle();
+                        }
+                    }}
+                    disabled={selectedAnswer === undefined}
+                >
+                    {questionIndex < questions.length - 1
+                        ? "Next Question"
+                        : "Finish Test"}
+                </Button>
+            </div>
         </div>
     );
 };
