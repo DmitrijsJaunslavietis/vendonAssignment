@@ -6,10 +6,8 @@ export interface Question {
     id: number;
     testId: number;
     question: string;
-}
-
-export interface QuestionWithAnswers extends Question { //???
     answers: Answer[];
+    result?: UserAnswer;
 }
 
 export interface Answer {
@@ -22,12 +20,12 @@ export interface TestInstance {
     id: string;
     user: string;
     testId: number;
-    answers: UserAnswer[];
+    questions: Question[];
     finished: boolean;
 }
 
-export interface UserAnswer extends Answer {
-    userAnswerId: number;//???
+export interface UserAnswer {
+    userAnswerId: number;
     correctAnswerId?: number;
 }
 
