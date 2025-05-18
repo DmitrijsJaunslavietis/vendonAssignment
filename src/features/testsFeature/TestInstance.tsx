@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import data from "../../mockTests/tests.json";
 import { useNavigate, useParams } from "react-router";
 import type { Question } from "../../types/test.types";
 import {
     useCurrentTestInstance,
+    usePassedTestQuestions,
     useTestInstanceActions,
 } from "../../hooks/useTestInstanceStore";
 import { Button } from "../../components/Button";
@@ -13,6 +14,7 @@ export const TestInstance = () => {
     const navigate = useNavigate();
     const { instanceId } = useParams();
     const testInstance = useCurrentTestInstance();
+    const passedTestQuestions = usePassedTestQuestions();
     const { setQuestions, setAnswer, setCorrectAnswers } =
         useTestInstanceActions();
     const [questionIndex, setQuestionIndex] = useState<number>(0);
@@ -20,6 +22,11 @@ export const TestInstance = () => {
         undefined
     );
     const questions = testInstance?.questions ?? [];
+    const ratio = useMemo(() => {
+        if (!testInstance) return 0;
+        const { questions } = testInstance;
+        return (passedTestQuestions / questions.length);
+    }, [passedTestQuestions, testInstance]);
 
     const submitTestHandle = () => {
         submitAnswerHandle();
@@ -101,6 +108,7 @@ export const TestInstance = () => {
                     />
                 ))}
             </div>
+            <progress value={ratio} />
             <div className="flex justify-end">
                 <Button
                     onClick={() => {
