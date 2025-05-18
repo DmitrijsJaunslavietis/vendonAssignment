@@ -47,7 +47,6 @@ export const TestInstance = () => {
             navigate(-1);
             return;
         }
-        console.log("correctAnswers", correctAnswers);
         setCorrectAnswers(correctAnswers);
         navigate(`/test-instance/${instanceId}/end`);
     };
@@ -96,7 +95,7 @@ export const TestInstance = () => {
             <h1 className="mb-4 text-xl">
                 {questions[questionIndex]?.question}
             </h1>
-            <div className="column-1 mb-10">
+            <div className="column-1 mb-4">
                 {questions[questionIndex]?.answers.map((answer) => (
                     <AnswerButton
                         selected={selectedAnswer === answer.id}
@@ -108,7 +107,7 @@ export const TestInstance = () => {
                     />
                 ))}
             </div>
-            <progress value={ratio} />
+            <progress value={ratio} className="progressBar mb-4"/>
             <div className="flex justify-end">
                 <Button
                     onClick={() => {

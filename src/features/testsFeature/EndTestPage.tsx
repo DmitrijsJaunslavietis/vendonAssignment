@@ -18,7 +18,6 @@ export const EndTestPage = () => {
             correctAnswers: 0,
         };
         if (!testInstance) return defaultValues;
-        console.log(testInstance);
         const correctAnswers = testInstance.questions.filter(
             (question) =>
                 question.result?.userAnswerId ===
