@@ -1,0 +1,196 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, vi, expect, test } from "vitest";
+import { TestInstance } from "./TestInstance";
+import type { Question } from "../../types/test.types";
+import { useState } from "react";
+
+// Moke react-router navigate
+const mockedNavigate = vi.fn();
+
+vi.mock("react-router", async () => {
+    const actual = await vi.importActual("react-router");
+    return {
+        ...actual,
+        useNavigate: () => mockedNavigate,
+    };
+});
+
+const submitAnswerHandle = vi.fn();
+const submitTestHandle = vi.fn();
+
+describe("TestInstance", () => {
+    test("shows question, answers and Next question button", () => {
+        renderPage();
+        const questionElement = screen.getByTestId("question");
+        const answerElements = screen.getAllByTestId("answer-button");
+        const submitButton = screen.getByTestId("submit-answer");
+        expect(questionElement).toBeInTheDocument();
+        expect(answerElements.length).toBeGreaterThan(0);
+        expect(submitButton).toBeInTheDocument();
+    });
+
+    test("submit button is disabled when no answer is selected", () => {
+        renderPage();
+        const submitButton = screen.getByTestId("submit-answer");
+        expect(submitButton).toBeDisabled();
+    });
+
+    test("submit button is enabled when an answer is selected", async () => {
+        renderPage();
+        const answerElements = screen.getAllByTestId("answer-button");
+        fireEvent.click(answerElements[0]);
+        expect(screen.getByTestId("submit-answer")).toBeEnabled();
+    });
+
+    test("next question button changes to next question", () => {
+        renderPage();
+        const answerElements = screen.getAllByTestId("answer-button");
+        fireEvent.click(answerElements[0]);
+        const submitButton = screen.getByTestId("submit-answer");
+        fireEvent.click(submitButton);
+        expect(screen.getByTestId("question")).toHaveTextContent(
+            questions[1].question
+        );
+    });
+
+    test("submit button text changed on last question", () => {
+        renderPage(true);
+        const answerElements = screen.getAllByTestId("answer-button");
+        fireEvent.click(answerElements[0]);
+        const submitButton = screen.getByTestId("submit-answer");
+        expect(submitButton).toHaveTextContent(/Finish Test/i);
+    });
+
+    test("submit test button is clicked", () => {
+        renderPage(true);
+        const answerElements = screen.getAllByTestId("answer-button");
+        fireEvent.click(answerElements[0]);
+        const submitButton = screen.getByTestId("submit-answer");
+        fireEvent.click(submitButton);
+        expect(submitAnswerHandle).toHaveBeenCalled();
+        expect(submitTestHandle).toHaveBeenCalled();
+    });
+});
+
+const questions: Question[] = [
+    {
+        id: 1,
+        testId: 1,
+        question: "What is the capital of France?",
+        answers: [
+            {
+                id: 1,
+                questionId: 1,
+                answer: "Berlin",
+            },
+            {
+                id: 2,
+                questionId: 1,
+                answer: "Madrid",
+            },
+            {
+                id: 3,
+                questionId: 1,
+                answer: "Paris",
+            },
+            {
+                id: 4,
+                questionId: 1,
+                answer: "Rome",
+            },
+        ],
+    },
+    {
+        id: 2,
+        testId: 1,
+        question: "What is the largest planet in our solar system?",
+        answers: [
+            {
+                id: 5,
+                questionId: 2,
+                answer: "Earth",
+            },
+            {
+                id: 6,
+                questionId: 2,
+                answer: "Jupiter",
+            },
+            {
+                id: 7,
+                questionId: 2,
+                answer: "Mars",
+            },
+            {
+                id: 8,
+                questionId: 2,
+                answer: "Saturn",
+            },
+        ],
+    },
+    {
+        id: 3,
+        testId: 1,
+        question: "What is the chemical symbol for gold?",
+        answers: [
+            {
+                id: 9,
+                questionId: 3,
+                answer: "Au",
+            },
+            {
+                id: 10,
+                questionId: 3,
+                answer: "Ag",
+            },
+            {
+                id: 11,
+                questionId: 3,
+                answer: "Hg",
+            },
+        ],
+    },
+    {
+        id: 4,
+        testId: 1,
+        question: "What is the speed of light?",
+        answers: [
+            {
+                id: 12,
+                questionId: 4,
+                answer: "299,792,458 m/s",
+            },
+            {
+                id: 13,
+                questionId: 4,
+                answer: "300,000 km/s",
+            },
+            {
+                id: 14,
+                questionId: 4,
+                answer: "150,000 km/s",
+            },
+        ],
+    },
+];
+
+const renderPage = (lastPage: boolean = false) => {
+    const Wrapper = () => {
+        const [answer, setAnswer] = useState<number | undefined>(undefined);
+        const [questionIndex, setQuestionIndex] = useState<number>(lastPage ? 3 : 0);
+
+        return (
+            <TestInstance
+                questions={questions}
+                questionIndex={questionIndex}
+                setQuestionIndex={setQuestionIndex}
+                selectedAnswer={answer}
+                setSelectedAnswer={setAnswer}
+                submitAnswerHandle={submitAnswerHandle}
+                submitTestHandle={submitTestHandle}
+                ratio={0}
+            />
+        );
+    };
+
+    return render(<Wrapper />);
+};
