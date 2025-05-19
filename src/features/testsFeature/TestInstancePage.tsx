@@ -19,16 +19,20 @@ export const TestInstancePage = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(
         undefined
     );
+
+    //getting questions from testInstance. useMemo is used to avoid unnecessary recalculations
     const questions = useMemo(
         () => testInstance?.questions ?? [],
         [testInstance]
     );
+    //ratio is used to show progress bar. useMemo is used to avoid unnecessary recalculations
     const ratio = useMemo(() => {
         if (!testInstance) return 0;
         const { questions } = testInstance;
         return (passedTestQuestions + 1) / questions.length;
     }, [passedTestQuestions, testInstance]);
 
+    //answer is set in testInstance store and removewd from local state, before next question is shown
     const submitAnswerHandle = useCallback(() => {
         if (selectedAnswer && testInstance) {
             setAnswer(questions[questionIndex].id, selectedAnswer);
@@ -36,6 +40,9 @@ export const TestInstancePage = () => {
         }
     }, [questionIndex, selectedAnswer, setAnswer, testInstance, questions]);
 
+    //submitTestHandle is used to submit test and get correct answers from API
+    //correct answers goes to testInstance store, where they are used to calculate score
+    //if all goes well, user is redirected to end page
     const submitTestHandle = useCallback(() => {
         submitAnswerHandle();
         const testId = testInstance?.testId;
@@ -64,6 +71,10 @@ export const TestInstancePage = () => {
         submitAnswerHandle,
     ]);
 
+    //useEffect to fetch questions from API by testId
+    //questions are set in testInstance store, where they are used to show questions and answers
+    //if test is finished, user is redirected to previous page
+    //answers dont have correct answer flag to prevent user from seeing them (for hackermans in dev tools)
     useEffect(() => {
         const fetchQuestions = () => {
             if (!testInstance) return;
@@ -80,11 +91,9 @@ export const TestInstancePage = () => {
             if (questionsData) {
                 questionsWithAnswers = questionsData.map((question) => ({
                     id: question.id,
-                    testId: testId,
                     question: question.question,
                     answers: question.answers.map((answer) => ({
                         id: answer.id,
-                        questionId: question.id,
                         answer: answer.answer,
                     })),
                 }));

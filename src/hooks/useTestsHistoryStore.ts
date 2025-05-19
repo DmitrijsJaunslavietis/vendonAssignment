@@ -11,6 +11,9 @@ interface TestsHistoryStore {
 const useTestsHistoryStore = create<TestsHistoryStore>((set) => ({
     testInstances: [],
     actions: {
+        // Function to set test instances in the store
+        // If the test instance already exists, it updates the instance
+        // Otherwise, it adds the new instance to the list
         setTestInstances: (testInstance) => {
             set((state) => {
                 const haveTestInstance = state.testInstances.some((instance) => instance.id === testInstance.id);

@@ -13,6 +13,7 @@ interface TestInstanceStore {
     },
 };
 
+//logic for managing the state of a test instance
 const useTestInstanceStore = create<TestInstanceStore>((set) => ({
     currentInstance: undefined,
     passedTestQuestions: 0,
@@ -28,6 +29,8 @@ const useTestInstanceStore = create<TestInstanceStore>((set) => ({
                     : undefined,
             }));
         },
+        //sets user answer for question
+        //answer is stored in current instances questions array question object as result
         setAnswer: (questionId, answer) => {
             set((state) => ({
                 passedTestQuestions: state.passedTestQuestions + 1,
@@ -49,6 +52,7 @@ const useTestInstanceStore = create<TestInstanceStore>((set) => ({
                     : undefined
             }));
         },
+        //sets correct answers for questions in the end of the test
         setCorrectAnswers: (correctAnswers) => {
             set((state) => ({
                 currentInstance: state.currentInstance

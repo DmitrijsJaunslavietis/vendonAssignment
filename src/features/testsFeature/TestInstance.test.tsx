@@ -87,98 +87,80 @@ describe("TestInstance", () => {
 const questions: Question[] = [
     {
         id: 1,
-        testId: 1,
         question: "What is the capital of France?",
         answers: [
             {
                 id: 1,
-                questionId: 1,
                 answer: "Berlin",
             },
             {
                 id: 2,
-                questionId: 1,
                 answer: "Madrid",
             },
             {
                 id: 3,
-                questionId: 1,
                 answer: "Paris",
             },
             {
                 id: 4,
-                questionId: 1,
                 answer: "Rome",
             },
         ],
     },
     {
         id: 2,
-        testId: 1,
         question: "What is the largest planet in our solar system?",
         answers: [
             {
                 id: 5,
-                questionId: 2,
                 answer: "Earth",
             },
             {
                 id: 6,
-                questionId: 2,
                 answer: "Jupiter",
             },
             {
                 id: 7,
-                questionId: 2,
                 answer: "Mars",
             },
             {
                 id: 8,
-                questionId: 2,
                 answer: "Saturn",
             },
         ],
     },
     {
         id: 3,
-        testId: 1,
         question: "What is the chemical symbol for gold?",
         answers: [
             {
                 id: 9,
-                questionId: 3,
                 answer: "Au",
             },
             {
                 id: 10,
-                questionId: 3,
                 answer: "Ag",
             },
             {
                 id: 11,
-                questionId: 3,
                 answer: "Hg",
             },
         ],
     },
     {
         id: 4,
-        testId: 1,
         question: "What is the speed of light?",
         answers: [
             {
                 id: 12,
-                questionId: 4,
                 answer: "299,792,458 m/s",
             },
             {
                 id: 13,
-                questionId: 4,
                 answer: "300,000 km/s",
             },
             {
                 id: 14,
-                questionId: 4,
                 answer: "150,000 km/s",
             },
         ],

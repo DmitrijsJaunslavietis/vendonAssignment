@@ -8,6 +8,11 @@ export const EndTestPage = () => {
     const testInstance = useCurrentTestInstance();
     const { setTestInstances } = useTestsHistoryActions();
     const user = useUser();
+
+    //useMemo is used to avoid unnecessary recalculations
+    //totalQuestions and correctAnswers are calculated from testInstance
+    //correctAnswers are filtered from testInstance.questions array
+    //default values are set to 0 if testInstance is not available
     const { totalQuestions, correctAnswers } = useMemo((): {
         totalQuestions: number;
         correctAnswers: number;
@@ -28,6 +33,9 @@ export const EndTestPage = () => {
         };
     }, [testInstance]);
 
+    //useEffect to set testInstance in testsHistory store
+    //this is used to show test results in history
+    //in the future, could be used to review past tests of user
     useEffect(() => {
         if (!testInstance) return;
         setTestInstances(testInstance);

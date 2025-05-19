@@ -4,7 +4,6 @@ export interface Test {
 }
 export interface Question { 
     id: number;
-    testId: number;
     question: string;
     answers: Answer[];
     result?: UserAnswer;
@@ -12,7 +11,6 @@ export interface Question {
 
 export interface Answer {
     id: number;
-    questionId: number;
     answer: string;
 }
 

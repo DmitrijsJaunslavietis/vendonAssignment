@@ -27,9 +27,12 @@ export const StartTestPage = () => {
     const [error, setError] = useState<string | undefined>(undefined);
     const [loading, setLoading] = useState(false);
 
+    //to start test we create a new test instance, which will be used through testinstance flow.
+    //questions array is empty at the beginning, because user doesnt need to see them yet, even in dev tools.
     const handleStartTest = useCallback(() => {
         setLoading(true);
         if (selectedTest && user) {
+            // API call start
             const testInstance = {
                 id: uuid(),
                 user: user,
@@ -43,9 +46,11 @@ export const StartTestPage = () => {
         } else {
             setError("Please select a test and enter your name.");
         }
-        setTimeout(() => setLoading(false), 1000);
+        setTimeout(() => setLoading(false), 1000); //imitating API call
+        // API call end
     }, [navigate, selectedTest, setCurrentInstance, setTestInstances, user]);
 
+    //useEffect to set tests from API - only name and id for select, user cannot see questions and answers yet (for hackermans in dev tools)
     useEffect(() => {
         setLoading(true);
         const fetchTests = () => {
@@ -62,7 +67,6 @@ export const StartTestPage = () => {
     return (
         <div className="max-w-[360px] mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
             <h1 className="mb-4 text-3xl">Testing app</h1>
-            {/* <p>rerender count: {renderCount.current}</p> */}
             <div className="flex flex-col gap-5">
                 <TextInput
                     data-testid="nameinput"
