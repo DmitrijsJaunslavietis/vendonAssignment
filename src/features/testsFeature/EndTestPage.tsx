@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { useUser } from "../../hooks/useUserStore";
 import { useCurrentTestInstance } from "../../hooks/useTestInstanceStore";
 import { useTestsHistoryActions } from "../../hooks/useTestsHistoryStore";
+import { EndTestView } from "./EndTestView";
 
 export const EndTestPage = () => {
-    const renderCount = useRef(0);
-    renderCount.current += 1;
     const testInstance = useCurrentTestInstance();
     const { setTestInstances } = useTestsHistoryActions();
     const user = useUser();
@@ -35,13 +34,10 @@ export const EndTestPage = () => {
     }, [testInstance, setTestInstances]);
 
     return (
-        <div className="max-w-[600px] mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
-            <p>rerender count: {renderCount.current}</p>
-            <h1 className="mb-4 text-3xl">Thank you, {user}!</h1>
-            <p>
-                You have answered correctly {correctAnswers} out of{" "}
-                {totalQuestions} questions.
-            </p>
-        </div>
+        <EndTestView
+            user={user}
+            totalQuestions={totalQuestions}
+            correctAnswers={correctAnswers}
+        />
     );
 };
