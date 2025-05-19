@@ -3,12 +3,21 @@
 A simple test system in which the user enters their name, chooses a test, executes
 it, and at the end sees their result.
 
+## Installation
+
+1) in project root execute command `yarn` to install dependencies
+2) then to start the local dev environment execute command `yarn dev`
+Project will start in your default browser with port `5173`
+
+* To execute tests - execute command `yarn test` (it will start in `--watch mode`)
+
 ## Main used tech stack
 
-* react
+* react with vite
 * typescript
 * zustand (state management)
 * tailwindcss
+* vitest
 
 ## Overview
 
@@ -18,6 +27,20 @@ The test consists of 3 different views:
 3) Result view - the user sees their result.
 
 ## Application flow
+
+App flow starts with form which includes user input, test select and submit button. All fields ar required, and user will receive error message if something is missing.
+To start test, new test instance object is created - it consists of chosen test id, user name, unique id, questions (empty array) and finished (flag).
+At first render api call receives questions based on test id without correct answers - it prevents possibility to check correct answers in dev tools.
+On each question submit - user answer id is store in question object result object. Submit answer button is protected from pressing without selected answer.
+On test end api call receives correct answers for each question - and correct answer id is set in result object along user answer id.
+The test end page shows thank you message with user name and overall result which consists of correct answer count and total.
+Test instance saves every time test ends.
+
+"Under the hood" functionality description will be found in source code comments and in diagram below.
+
+![flow diagram](./assets/flow.png)
+
+## Data model
 
 App uses mock test data from tests.json file. Every request for this data is commented with start and end of block, where API function needs to be implemented in the future.
 
@@ -69,14 +92,13 @@ Test {
 
 Question { 
     id: number;
-    testId: number;
     question: string;
     answers: Answer[];
+    result?: UserAnswer;
 }
 
 Answer {
     id: number;
-    questionId: number;
     answer: string;
 }
 
@@ -84,7 +106,7 @@ TestInstance {
     id: string;
     user: string;
     testId: number;
-    answers: UserAnswer[];
+    questions: Question[];
     finished: boolean;
 }
 
@@ -93,3 +115,18 @@ UserAnswer extends Answer {
     correctAnswerId?: number;
 }
 ```
+
+## Tests
+
+Main functionality are covered with tests using vitest library
+
+## TODO futures
+
+Test instance model was developed with the idea in mind, that it could be usefull in must have future features such:
+
+* Mistakes overview in the end of the test
+* Users test history
+* Tests overview from history
+* Tests statistics and metrics
+* Continue unfinished tests
+
