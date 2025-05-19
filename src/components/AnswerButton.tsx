@@ -1,5 +1,5 @@
 interface AnswerButtonProps
-    extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     selected: boolean;
     children?: React.ReactNode;
     text?: string;

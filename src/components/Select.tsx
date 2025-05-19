@@ -1,4 +1,4 @@
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
     label: string;
     options: Array<{ id: number; name: string }>;
 }

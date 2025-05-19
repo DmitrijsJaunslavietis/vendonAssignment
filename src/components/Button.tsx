@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     children?: React.ReactNode;
     text?: string;
     variant?: "primary" | "secondary" | "danger" | "text";
