@@ -4,17 +4,6 @@ import { TestInstance } from "./TestInstance";
 import type { Question } from "../../types/test.types";
 import { useState } from "react";
 
-// Moke react-router navigate
-const mockedNavigate = vi.fn();
-
-vi.mock("react-router", async () => {
-    const actual = await vi.importActual("react-router");
-    return {
-        ...actual,
-        useNavigate: () => mockedNavigate,
-    };
-});
-
 const submitAnswerHandle = vi.fn();
 const submitTestHandle = vi.fn();
 
@@ -69,6 +58,29 @@ describe("TestInstance", () => {
         fireEvent.click(submitButton);
         expect(submitAnswerHandle).toHaveBeenCalled();
         expect(submitTestHandle).toHaveBeenCalled();
+    });
+
+    test("progress bar is shown", () => {
+        renderPage();
+        const progressBar = screen.getByRole("progressbar");
+        expect(progressBar).toBeInTheDocument();
+    });
+
+    test("ratio is correct", () => {
+        renderPage();
+        const progressBar = screen.getByRole("progressbar");
+        expect(progressBar).toHaveAttribute("value", "0.25");
+        const answerElements = screen.getAllByTestId("answer-button");
+        fireEvent.click(answerElements[0]);
+        const submitButton = screen.getByTestId("submit-answer");
+        fireEvent.click(submitButton);
+        expect(progressBar).toHaveAttribute("value", "0.5");
+        fireEvent.click(answerElements[1]);
+        fireEvent.click(submitButton);
+        expect(progressBar).toHaveAttribute("value", "0.75");
+        fireEvent.click(answerElements[2]);
+        fireEvent.click(submitButton);
+        expect(progressBar).toHaveAttribute("value", "1");
     });
 });
 
@@ -177,6 +189,7 @@ const renderPage = (lastPage: boolean = false) => {
     const Wrapper = () => {
         const [answer, setAnswer] = useState<number | undefined>(undefined);
         const [questionIndex, setQuestionIndex] = useState<number>(lastPage ? 3 : 0);
+        const ratio = (questionIndex + 1) / questions.length;
 
         return (
             <TestInstance
@@ -187,7 +200,7 @@ const renderPage = (lastPage: boolean = false) => {
                 setSelectedAnswer={setAnswer}
                 submitAnswerHandle={submitAnswerHandle}
                 submitTestHandle={submitTestHandle}
-                ratio={0}
+                ratio={ratio}
             />
         );
     };

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import data from "../../mockTests/tests.json";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import type { Question } from "../../types/test.types";
 import {
     useCurrentTestInstance,
@@ -11,7 +11,6 @@ import { TestInstance } from "./TestInstance";
 
 export const TestInstancePage = () => {
     const navigate = useNavigate();
-    const { instanceId } = useParams();
     const testInstance = useCurrentTestInstance();
     const passedTestQuestions = usePassedTestQuestions();
     const { setQuestions, setAnswer, setCorrectAnswers } =
@@ -27,7 +26,7 @@ export const TestInstancePage = () => {
     const ratio = useMemo(() => {
         if (!testInstance) return 0;
         const { questions } = testInstance;
-        return passedTestQuestions / questions.length;
+        return (passedTestQuestions + 1) / questions.length;
     }, [passedTestQuestions, testInstance]);
 
     const submitAnswerHandle = useCallback(() => {
@@ -57,9 +56,8 @@ export const TestInstancePage = () => {
             return;
         }
         setCorrectAnswers(correctAnswers);
-        navigate(`/test-instance/${instanceId}/end`);
+        navigate(`/test-instance/end`);
     }, [
-        instanceId,
         navigate,
         setCorrectAnswers,
         testInstance,

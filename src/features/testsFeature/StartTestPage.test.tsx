@@ -39,6 +39,34 @@ describe("StartTestPage", () => {
         ).toBeInTheDocument();
     });
 
+    test("shows error if no name value", () => {
+        renderPage();
+        const nameInput = screen.getByTestId("nameinput");
+        const testSelect = screen.getByTestId("testselect");
+        const startButton = screen.getByText(/start test/i);
+        fireEvent.change(nameInput, { target: { value: "" } });
+        fireEvent.change(testSelect, { target: { value: 1 } });
+
+        fireEvent.click(startButton);
+        expect(
+            screen.getByText(/Please select a test and enter your name./i)
+        ).toBeInTheDocument();
+    });
+
+    test("shows error if no test value", () => {
+        renderPage();
+        const nameInput = screen.getByTestId("nameinput");
+        const testSelect = screen.getByTestId("testselect");
+        const startButton = screen.getByText(/start test/i);
+        fireEvent.change(nameInput, { target: { value: "John Doe" } });
+        fireEvent.change(testSelect, { target: { value: "" } });
+
+        fireEvent.click(startButton);
+        expect(
+            screen.getByText(/Please select a test and enter your name./i)
+        ).toBeInTheDocument();
+    });
+
     test("is disabled when loading", () => {
         renderPage();
         const nameInput = screen.getByTestId("nameinput");

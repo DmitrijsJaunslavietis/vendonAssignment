@@ -9,8 +9,8 @@ export const TestsRouter = () => {
     return (
         <Routes>
             <Route path="/" element={<StartTestPage />} />
-            <Route path="/test-instance/:instanceId" element={<TestInstancePage />} />
-            <Route path="/test-instance/:instanceId/end" element={<EndTestPage />} />
+            <Route path="/test-instance" element={<TestInstancePage />} />
+            <Route path="/test-instance/end" element={<EndTestPage />} />
         </Routes>
     );
 };

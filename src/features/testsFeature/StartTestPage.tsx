@@ -39,7 +39,7 @@ export const StartTestPage = () => {
             };
             setCurrentInstance(testInstance);
             setTestInstances(testInstance);
-            navigate(`/test-instance/${testInstance.id}`);
+            navigate(`/test-instance`);
         } else {
             setError("Please select a test and enter your name.");
         }

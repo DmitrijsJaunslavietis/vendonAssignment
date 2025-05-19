@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { AnswerButton } from "../../components/AnswerButton";
 import { Button } from "../../components/Button";
 import type { Question } from "../../types/test.types";
@@ -24,10 +23,6 @@ export const TestInstance = ({
     submitTestHandle,
     ratio
 }: TestInstanceProps) => {
-
-    useEffect(() => {
-        console.log("Selected answer changed:", selectedAnswer);
-    }, [selectedAnswer]);
 
     return (
         <div className="mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
