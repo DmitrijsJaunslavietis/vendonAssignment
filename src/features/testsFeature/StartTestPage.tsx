@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { useTests, useTestsActions } from "../../hooks/useTestsStore";
 import data from "../../mockTests/tests.json";
@@ -27,7 +27,7 @@ export const StartTestPage = () => {
     const [error, setError] = useState<string | undefined>(undefined);
     const [loading, setLoading] = useState(false);
 
-    const handleStartTest = () => {
+    const handleStartTest = useCallback(() => {
         setLoading(true);
         if (selectedTest && user) {
             const testInstance = {
@@ -43,8 +43,8 @@ export const StartTestPage = () => {
         } else {
             setError("Please select a test and enter your name.");
         }
-        setLoading(false);
-    };
+        setTimeout(() => setLoading(false), 1000);
+    }, [navigate, selectedTest, setCurrentInstance, setTestInstances, user]);
 
     useEffect(() => {
         setLoading(true);
@@ -65,6 +65,7 @@ export const StartTestPage = () => {
             {/* <p>rerender count: {renderCount.current}</p> */}
             <div className="flex flex-col gap-5">
                 <TextInput
+                    data-testid="nameinput"
                     label="Enter your name:"
                     type="text"
                     value={user}
@@ -74,6 +75,7 @@ export const StartTestPage = () => {
                     }}
                 />
                 <Select
+                    data-testid="testselect"
                     label="Select a test:"
                     options={tests}
                     onChange={(e) => {
@@ -82,7 +84,10 @@ export const StartTestPage = () => {
                     }}
                 />
                 {error && <ErrorBadge error={error} />}
-                <Button onClick={handleStartTest} disabled={loading}>
+                <Button
+                    onClick={handleStartTest}
+                    disabled={loading}
+                >
                     Start Test
                 </Button>
             </div>
