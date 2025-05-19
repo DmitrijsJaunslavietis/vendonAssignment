@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
@@ -8,4 +9,10 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/setup-tests/setup-vitest.ts',
+    include: ['**/*.test.tsx', '**/*.test.ts'],
+    globals: true,
+  }
 });
