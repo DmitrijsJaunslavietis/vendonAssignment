@@ -23,7 +23,9 @@ describe("EndAssessmentPage", () => {
         renderPage();
         const assessmentResults = screen.getByTestId("test-results");
         expect(assessmentResults).toBeInTheDocument();
-        expect(assessmentResults).toHaveTextContent(`You have answered correctly ${8} out of ${10} questions.`);
+        expect(assessmentResults).toHaveTextContent(
+            `You have answered correctly ${8} out of ${10} questions.`
+        );
     });
 });
 
@@ -32,7 +34,11 @@ const renderPage = () => {
         const user = "John Doe";
 
         return (
-            <EndAssessmentView user={user} totalQuestions={10} correctAnswers={8} />
+            <EndAssessmentView
+                user={user}
+                totalQuestions={10}
+                correctAnswers={8}
+            />
         );
     };
     return render(<Wrapper />);

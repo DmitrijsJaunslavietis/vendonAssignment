@@ -170,7 +170,9 @@ const questions: Question[] = [
 const renderPage = (lastPage: boolean = false) => {
     const Wrapper = () => {
         const [answer, setAnswer] = useState<number | undefined>(undefined);
-        const [questionIndex, setQuestionIndex] = useState<number>(lastPage ? 3 : 0);
+        const [questionIndex, setQuestionIndex] = useState<number>(
+            lastPage ? 3 : 0
+        );
         const ratio = (questionIndex + 1) / questions.length;
 
         return (

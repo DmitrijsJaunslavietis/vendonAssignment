@@ -22,7 +22,8 @@ export const StartAssessmentPage = () => {
     const user = useUser();
     const setUser = useSetUser();
     const { setAssessments } = useAssessmentsActions();
-    const { setCurrentInstance, resetPassedAssessmentQuestions } = useAssessmentInstanceActions();
+    const { setCurrentInstance, resetPassedAssessmentQuestions } =
+        useAssessmentInstanceActions();
     const { setAssessmentInstances } = useAssessmentHistoryActions();
     const [selectedAssessment, setSelectedAssessment] = useState<
         number | undefined
@@ -32,7 +33,7 @@ export const StartAssessmentPage = () => {
 
     //to start assessment we create a new assessment instance, which will be used through assessmentinstance flow.
     //questions array is empty at the beginning, because user doesnt need to see them yet, even in dev tools.
-    const handleStartAssessment= useCallback(() => {
+    const handleStartAssessment = useCallback(() => {
         setLoading(true);
         if (selectedAssessment && user) {
             // API call start
@@ -52,13 +53,20 @@ export const StartAssessmentPage = () => {
         }
         setTimeout(() => setLoading(false), 1000); //imitating API call
         // API call end
-    }, [selectedAssessment, user, setCurrentInstance, setAssessmentInstances, resetPassedAssessmentQuestions, navigate]);
+    }, [
+        selectedAssessment,
+        user,
+        setCurrentInstance,
+        setAssessmentInstances,
+        resetPassedAssessmentQuestions,
+        navigate,
+    ]);
 
     //useEffect to set assessments from API - only name and id for select, user cannot see questions and answers yet (for hackermans in dev tools)
     useEffect(() => {
         setLoading(true);
         const fetchAssessments = () => {
-            const assessmentsData = data.map((assessment) => ({
+            const assessmentsData = data.map(assessment => ({
                 id: assessment.id,
                 name: assessment.name,
             }));
@@ -77,7 +85,7 @@ export const StartAssessmentPage = () => {
                     label="Enter your name:"
                     type="text"
                     value={user}
-                    onChange={(e) => {
+                    onChange={e => {
                         setError(undefined);
                         setUser(e.target.value);
                     }}
@@ -86,7 +94,7 @@ export const StartAssessmentPage = () => {
                     data-testid="testselect"
                     label="Select a test:"
                     options={assessments}
-                    onChange={(e) => {
+                    onChange={e => {
                         setError(undefined);
                         setSelectedAssessment(Number(e.target.value));
                     }}

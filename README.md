@@ -5,26 +5,28 @@ it, and at the end sees their result.
 
 ## Installation
 
-1) in project root execute command `yarn` to install dependencies
-2) then to start the local dev environment execute command `yarn dev`
-Project will start in your default browser with port `5173`
+1. in project root execute command `yarn` to install dependencies
+2. then to start the local dev environment execute command `yarn dev`
+   Project will start in your default browser with port `5173`
 
-* To execute tests - execute command `yarn test` (it will start in `--watch mode`)
+- To execute tests - execute command `yarn test` (it will start in `--watch mode`)
 
 ## Main used tech stack
 
-* react with vite
-* typescript
-* zustand (state management)
-* tailwindcss
-* vitest
+- react with vite
+- typescript
+- zustand (state management)
+- tailwindcss
+- vitest
+- prettier / lint
 
 ## Overview
 
 The test consists of 3 different views:
-1) Homepage - the user enters their name and chooses one of the available tests
-2) Assessment question view - each question has answer options. One of them is correct.
-3) Result view - the user sees their result.
+
+1. Homepage - the user enters their name and chooses one of the available tests
+2. Assessment question view - each question has answer options. One of them is correct.
+3. Result view - the user sees their result.
 
 ## Application flow
 
@@ -40,9 +42,11 @@ assessment instance saves every time assessment ends.
 
 ![flow diagram](./assets/flow.png)
 
+## Architecture
+
 ## Data model
 
-App uses mock test data from tests.json file. Every request for this data is commented with start and end of block, where API function needs to be implemented in the future.
+App uses mock test data from assessments.json file. Every request for this data is commented with start and end of block, where API function needs to be implemented in the future.
 
 As this application will serve as testing app, the main aspect for data modeling i used, were restriction for assessment sensitive data to be available before and while assessment is in progress.
 
@@ -73,6 +77,7 @@ Full tests mock data structure:
 ### Start assessment page
 
 On starting page users have only tests to chose from, this implementation prevents users from accessing questions and answers as well.
+
 ```
 Assessment {
     id: number;
@@ -90,7 +95,7 @@ Assessment {
     name: string;
 }
 
-Question { 
+Question {
     id: number;
     question: string;
     answers: Answer[];
@@ -124,9 +129,8 @@ Main functionality are covered with tests using vitest library
 
 Assessment instance model was developed with the idea in mind, that it could be usefull in must have future features such:
 
-* Mistakes overview in the end of the assessment
-* Users assessments history
-* Assessments overview from history
-* Assessments statistics and metrics
-* Continue unfinished Assessments
-
+- Mistakes overview in the end of the assessment
+- Users assessments history
+- Assessments overview from history
+- Assessments statistics and metrics
+- Continue unfinished Assessments

@@ -21,16 +21,15 @@ export const AssessmentInstanceView = ({
     setSelectedAnswer,
     submitAnswerHandle,
     submitAssessmentHandle,
-    ratio
+    ratio,
 }: AssessmentInstanceViewProps) => {
-
     return (
         <div className="mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
             <h1 data-testid="question" className="mb-4 text-xl">
                 {questions[questionIndex]?.question}
             </h1>
             <div className="column-1 mb-4">
-                {questions[questionIndex]?.answers.map((answer) => (
+                {questions[questionIndex]?.answers.map(answer => (
                     <AnswerButton
                         data-testid="answer-button"
                         selected={selectedAnswer === answer.id}

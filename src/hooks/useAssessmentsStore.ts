@@ -8,14 +8,16 @@ interface useAssessmentsStore {
     };
 }
 
-export const useAssessmentsStore = create<useAssessmentsStore>((set) => ({
+export const useAssessmentsStore = create<useAssessmentsStore>(set => ({
     assessments: [],
     actions: {
-        setAssessments: (assessments) => {
+        setAssessments: assessments => {
             set(() => ({ assessments }));
         },
-    }
+    },
 }));
 
-export const useAssessments = () => useAssessmentsStore((state) => state.assessments);
-export const useAssessmentsActions = () => useAssessmentsStore((state) => state.actions);
+export const useAssessments = () =>
+    useAssessmentsStore(state => state.assessments);
+export const useAssessmentsActions = () =>
+    useAssessmentsStore(state => state.actions);

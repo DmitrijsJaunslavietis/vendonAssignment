@@ -1,4 +1,8 @@
-interface SelectProps extends React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
+interface SelectProps
+    extends React.DetailedHTMLProps<
+        React.SelectHTMLAttributes<HTMLSelectElement>,
+        HTMLSelectElement
+    > {
     label: string;
     options: Array<{ id: number; name: string }>;
 }
@@ -15,7 +19,7 @@ export const Select = ({ label, options, ...props }: SelectProps) => {
                     {" "}
                     -- select a test --{" "}
                 </option>
-                {options.map((option) => (
+                {options.map(option => (
                     <option key={option.id} value={option.id}>
                         {option.name}
                     </option>

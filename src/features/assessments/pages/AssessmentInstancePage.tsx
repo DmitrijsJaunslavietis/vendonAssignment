@@ -48,16 +48,15 @@ export const AssessmentInstancePage = () => {
         const assessmentId = currentInstance?.assessmentId;
         //get correct answers from API
         const correctAnswers = data
-            .find((assessment) => assessment.id === assessmentId)
-            ?.questions.map((question) => ({
+            .find(assessment => assessment.id === assessmentId)
+            ?.questions.map(question => ({
                 correctAnswerId:
-                    question.answers.find((answer) => answer.isCorrect)?.id ??
-                    0,
+                    question.answers.find(answer => answer.isCorrect)?.id ?? 0,
                 questionId: question.id,
             }));
         // API call end
         if (!correctAnswers) return;
-        if (correctAnswers?.some((answer) => answer.correctAnswerId === 0)) {
+        if (correctAnswers?.some(answer => answer.correctAnswerId === 0)) {
             //unexpected ERROR
             navigate(-1);
             return;
@@ -81,13 +80,13 @@ export const AssessmentInstancePage = () => {
             // API call by assessmentId start
             let questionsWithAnswers: Question[] | [] = [];
             const questionsData = data.find(
-                (assessment) => assessment.id === assessmentId
+                assessment => assessment.id === assessmentId
             )?.questions;
             if (questionsData) {
-                questionsWithAnswers = questionsData.map((question) => ({
+                questionsWithAnswers = questionsData.map(question => ({
                     id: question.id,
                     question: question.question,
-                    answers: question.answers.map((answer) => ({
+                    answers: question.answers.map(answer => ({
                         id: answer.id,
                         answer: answer.answer,
                     })),

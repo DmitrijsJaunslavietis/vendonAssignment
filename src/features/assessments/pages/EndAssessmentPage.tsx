@@ -23,7 +23,7 @@ export const EndAssessmentPage = () => {
         };
         if (!currentInstance) return defaultValues;
         const correctAnswers = currentInstance.questions.filter(
-            (question) =>
+            question =>
                 question.result?.userAnswerId ===
                 question.result?.correctAnswerId
         );

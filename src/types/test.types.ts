@@ -2,7 +2,7 @@ export interface Assessment {
     id: number;
     name: string;
 }
-export interface Question { 
+export interface Question {
     id: number;
     question: string;
     answers: Answer[];
