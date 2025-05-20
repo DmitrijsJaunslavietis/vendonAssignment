@@ -19,6 +19,7 @@ it, and at the end sees their result.
 - tailwindcss
 - vitest
 - prettier / lint
+- husky precommit hook - to lint and prettier staged files
 
 ## Overview
 
@@ -124,6 +125,10 @@ UserAnswer extends Answer {
 ## Tests
 
 Main functionality are covered with tests using vitest library
+
+## Additional
+
+Added husky precommit hook to run staged files prettier and lint check/fix
 
 ## TODO futures
 
