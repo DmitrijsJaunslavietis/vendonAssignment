@@ -1,6 +1,6 @@
 # Vendon assignment
 
-A simple test system in which the user enters their name, chooses a test, executes
+A simple assessment system in which the user enters their name, chooses a test, executes
 it, and at the end sees their result.
 
 ## Installation
@@ -23,18 +23,18 @@ Project will start in your default browser with port `5173`
 
 The test consists of 3 different views:
 1) Homepage - the user enters their name and chooses one of the available tests
-2) Test question view - each question has answer options. One of them is correct.
+2) Assessment question view - each question has answer options. One of them is correct.
 3) Result view - the user sees their result.
 
 ## Application flow
 
 App flow starts with form which includes user input, test select and submit button. All fields ar required, and user will receive error message if something is missing.
-To start test, new test instance object is created - it consists of chosen test id, user name, unique id, questions (empty array) and finished (flag).
-At first render api call receives questions based on test id without correct answers - it prevents possibility to check correct answers in dev tools.
+To start assessment, new assessment instance object is created - it consists of chosen assessment id, user name, unique id, questions (empty array) and finished (flag).
+At first render api call receives questions based on assessment id without correct answers - it prevents possibility to check correct answers in dev tools.
 On each question submit - user answer id is store in question object result object. Submit answer button is protected from pressing without selected answer.
-On test end api call receives correct answers for each question - and correct answer id is set in result object along user answer id.
-The test end page shows thank you message with user name and overall result which consists of correct answer count and total.
-Test instance saves every time test ends.
+On assessment end api call receives correct answers for each question - and correct answer id is set in result object along user answer id.
+The assessment end page shows thank you message with user name and overall result which consists of correct answer count and total.
+assessment instance saves every time assessment ends.
 
 "Under the hood" functionality description will be found in source code comments and in diagram below.
 
@@ -44,7 +44,7 @@ Test instance saves every time test ends.
 
 App uses mock test data from tests.json file. Every request for this data is commented with start and end of block, where API function needs to be implemented in the future.
 
-As this application will serve as testing app, the main aspect for data modeling i used, were restriction for test sensitive data to be available before and while test is in progress.
+As this application will serve as testing app, the main aspect for data modeling i used, were restriction for assessment sensitive data to be available before and while assessment is in progress.
 
 Full tests mock data structure:
 
@@ -70,22 +70,22 @@ Full tests mock data structure:
 }
 ```
 
-### Start test page
+### Start assessment page
 
 On starting page users have only tests to chose from, this implementation prevents users from accessing questions and answers as well.
 ```
-Test {
+Assessment {
     id: number;
     name: string;
 }
 ```
 
-### Test instance page
+### Assessment instance page
 
-Test instance provides all questions and answers but without correct answer flag, this implementation prevents users from accessing correct answer information.
+Assessment instance provides all questions and answers but without correct answer flag, this implementation prevents users from accessing correct answer information.
 
 ```
-Test {
+Assessment {
     id: number;
     name: string;
 }
@@ -102,10 +102,10 @@ Answer {
     answer: string;
 }
 
-TestInstance {
+AssessmentInstance {
     id: string;
     user: string;
-    testId: number;
+    assessmentId: number;
     questions: Question[];
     finished: boolean;
 }
@@ -122,11 +122,11 @@ Main functionality are covered with tests using vitest library
 
 ## TODO futures
 
-Test instance model was developed with the idea in mind, that it could be usefull in must have future features such:
+Assessment instance model was developed with the idea in mind, that it could be usefull in must have future features such:
 
-* Mistakes overview in the end of the test
-* Users test history
-* Tests overview from history
-* Tests statistics and metrics
-* Continue unfinished tests
+* Mistakes overview in the end of the assessment
+* Users assessments history
+* Assessments overview from history
+* Assessments statistics and metrics
+* Continue unfinished Assessments
 
