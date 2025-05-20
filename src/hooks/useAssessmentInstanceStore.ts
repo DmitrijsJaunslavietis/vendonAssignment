@@ -1,33 +1,28 @@
 import { create } from "zustand";
-import type { CorrectAnswer, Question, AssessmentInstance } from "../types/test.types";
+import type { CorrectAnswer, AssessmentInstance } from "../types/test.types";
 
 
 interface useAssessmentInstanceStore {
     currentInstance: AssessmentInstance | undefined;
     passedAssessmentQuestions: number;
     actions: {
+        resetPassedAssessmentQuestions: () => void;
         setCurrentInstance: (instance: AssessmentInstance | undefined) => void;
-        setQuestions: (questions: Question[]) => void;
         setAnswer: (questionId: number, answer: number) => void;
         setCorrectAnswers: (correctAnswers: CorrectAnswer[]) => void;
     },
 };
 
 //logic for managing the state of a assessment instance
-const useAssessmentInstanceStore = create<useAssessmentInstanceStore>((set) => ({
+export const useAssessmentInstanceStore = create<useAssessmentInstanceStore>((set) => ({
     currentInstance: undefined,
     passedAssessmentQuestions: 0,
     actions: {
+        resetPassedAssessmentQuestions: () => {
+            set(() => ({ passedAssessmentQuestions: 0 }));
+        },
         setCurrentInstance: (instance) => {
             set(() => ({ currentInstance: instance }));
-        },
-        setQuestions: (questions) => {
-            set((state) => ({
-                passedAssessmentQuestions: 0,
-                currentInstance: state.currentInstance
-                    ? { ...state.currentInstance, questions }
-                    : undefined,
-            }));
         },
         //sets user answer for question
         //answer is stored in current instances questions array question object as result

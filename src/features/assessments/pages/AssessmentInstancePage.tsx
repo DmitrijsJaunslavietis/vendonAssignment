@@ -3,13 +3,17 @@ import data from "../../../mockTests/tests.json";
 import { useNavigate } from "react-router";
 import type { Question } from "../../../types/test.types";
 import { AssessmentInstanceView } from "../views/AssessmentInstanceView";
-import { useCurrentAssessmentInstance, usePassedAssessmentQuestions, useAssessmentInstanceActions } from "../../../hooks/useAssessmentInstanceStore";
+import {
+    useCurrentAssessmentInstance,
+    usePassedAssessmentQuestions,
+    useAssessmentInstanceActions,
+} from "../../../hooks/useAssessmentInstanceStore";
 
 export const AssessmentInstancePage = () => {
     const navigate = useNavigate();
     const currentInstance = useCurrentAssessmentInstance();
     const passedAssessmentQuestions = usePassedAssessmentQuestions();
-    const { setQuestions, setAnswer, setCorrectAnswers } =
+    const { setAnswer, setCorrectAnswers, setCurrentInstance } =
         useAssessmentInstanceActions();
     const [questionIndex, setQuestionIndex] = useState<number>(0);
     const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(
@@ -60,12 +64,7 @@ export const AssessmentInstancePage = () => {
         }
         setCorrectAnswers(correctAnswers);
         navigate(`/assessment-instance/end`);
-    }, [
-        navigate,
-        setCorrectAnswers,
-        currentInstance,
-        submitAnswerHandle,
-    ]);
+    }, [navigate, setCorrectAnswers, currentInstance, submitAnswerHandle]);
 
     //useEffect to fetch questions from API by assessmentId
     //questions are set in currentInstance store, where they are used to show questions and answers
@@ -96,7 +95,10 @@ export const AssessmentInstancePage = () => {
             }
             // API call by assessmentId end
 
-            setQuestions(questionsWithAnswers);
+            setCurrentInstance({
+                ...currentInstance,
+                questions: questionsWithAnswers,
+            });
         };
         fetchQuestions();
     }, []);

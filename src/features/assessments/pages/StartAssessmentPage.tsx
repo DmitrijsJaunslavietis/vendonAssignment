@@ -22,7 +22,7 @@ export const StartAssessmentPage = () => {
     const user = useUser();
     const setUser = useSetUser();
     const { setAssessments } = useAssessmentsActions();
-    const { setCurrentInstance } = useAssessmentInstanceActions();
+    const { setCurrentInstance, resetPassedAssessmentQuestions } = useAssessmentInstanceActions();
     const { setAssessmentInstances } = useAssessmentHistoryActions();
     const [selectedAssessment, setSelectedAssessment] = useState<
         number | undefined
@@ -45,6 +45,7 @@ export const StartAssessmentPage = () => {
             };
             setCurrentInstance(newInstance);
             setAssessmentInstances(newInstance);
+            resetPassedAssessmentQuestions();
             navigate(`/assessment-instance`);
         } else {
             setError("Please select a test and enter your name.");

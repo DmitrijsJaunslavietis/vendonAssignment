@@ -5,7 +5,7 @@ interface UserStore {
     setUser: (user: string) => void;
 };
 
-const useUserStore = create<UserStore>((set) => ({
+export const useUserStore = create<UserStore>((set) => ({
     user: undefined,
     setUser: (user) => {
         set(() => ({ user }));

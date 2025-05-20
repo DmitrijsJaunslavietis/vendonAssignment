@@ -8,7 +8,7 @@ interface useAssessmentsStore {
     };
 }
 
-const useAssessmentsStore = create<useAssessmentsStore>((set) => ({
+export const useAssessmentsStore = create<useAssessmentsStore>((set) => ({
     assessments: [],
     actions: {
         setAssessments: (assessments) => {

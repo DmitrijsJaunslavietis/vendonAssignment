@@ -8,7 +8,7 @@ interface useAssessmentHistoryStore {
     }
 }
 
-const useAssessmentHistoryStore = create<useAssessmentHistoryStore>((set) => ({
+export const useAssessmentHistoryStore = create<useAssessmentHistoryStore>((set) => ({
     assessmentInstances: [],
     actions: {
         // Function to set assessment instances in the store
