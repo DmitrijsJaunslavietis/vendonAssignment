@@ -4,7 +4,7 @@ import {
     useAssessments,
     useAssessmentsActions,
 } from "../../../hooks/useAssessmentsStore";
-import data from "../../../mockTests/tests.json";
+import data from "../../../mockAssessments/assessments.json";
 import { useNavigate } from "react-router";
 import { useSetUser, useUser } from "../../../hooks/useUserStore";
 import { TextInput } from "../../../components/TextInput";
