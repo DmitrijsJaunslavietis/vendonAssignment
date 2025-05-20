@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, vi, expect, test } from "vitest";
-import { EndTestView } from "./EndTestView";
+import { EndAssessmentView } from "./EndAssessmentView";
 
 // Moke react-router navigate
 const mockedNavigate = vi.fn();
@@ -12,8 +12,8 @@ vi.mock("react-router", async () => {
     };
 });
 
-describe("EndTestPage", () => {
-    test("shows name user typed in the beginning of the test", () => {
+describe("EndAssessmentPage", () => {
+    test("shows name user typed in the beginning of the assessment", () => {
         renderPage();
         const userName = screen.getByTestId("user-name");
         expect(userName).toBeInTheDocument();
@@ -21,9 +21,9 @@ describe("EndTestPage", () => {
 
     test("shows total questions and correct answers", () => {
         renderPage();
-        const testResults = screen.getByTestId("test-results");
-        expect(testResults).toBeInTheDocument();
-        expect(testResults).toHaveTextContent(`You have answered correctly ${8} out of ${10} questions.`);
+        const assessmentResults = screen.getByTestId("test-results");
+        expect(assessmentResults).toBeInTheDocument();
+        expect(assessmentResults).toHaveTextContent(`You have answered correctly ${8} out of ${10} questions.`);
     });
 });
 
@@ -32,7 +32,7 @@ const renderPage = () => {
         const user = "John Doe";
 
         return (
-            <EndTestView user={user} totalQuestions={10} correctAnswers={8} />
+            <EndAssessmentView user={user} totalQuestions={10} correctAnswers={8} />
         );
     };
     return render(<Wrapper />);

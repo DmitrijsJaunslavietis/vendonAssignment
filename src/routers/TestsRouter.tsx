@@ -1,16 +1,16 @@
 import { Route, Routes } from "react-router";
-import { StartTestPage } from "../features/testsFeature/StartTestPage";
-import { TestInstancePage } from "../features/testsFeature/TestInstancePage";
-import { EndTestPage } from "../features/testsFeature/EndTestPage";
+import { StartAssessmentPage } from "../features/assessments/pages/StartAssessmentPage";
+import { AssessmentInstancePage } from "../features/assessments/pages/AssessmentInstancePage";
+import { EndAssessmentPage } from "../features/assessments/pages/EndAssessmentPage";
 
 
 export const TestsRouter = () => {
 
     return (
         <Routes>
-            <Route path="/" element={<StartTestPage />} />
-            <Route path="/test-instance" element={<TestInstancePage />} />
-            <Route path="/test-instance/end" element={<EndTestPage />} />
+            <Route path="/" element={<StartAssessmentPage />} />
+            <Route path="/assessment-instance" element={<AssessmentInstancePage />} />
+            <Route path="/assessment-instance/end" element={<EndAssessmentPage />} />
         </Routes>
     );
 };

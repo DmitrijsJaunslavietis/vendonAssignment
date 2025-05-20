@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import "./App.css";
-import { useTestsHistory } from "./hooks/useTestsHistoryStore";
+import { useAssessmentHistory } from "./hooks/useAssessmentHistoryStore";
 import { MainLayout } from "./layouts/MainLayout";
 import { TestsRouter } from "./routers/TestsRouter";
 
 function App() {
-    const testInstances = useTestsHistory();
+    const assessmentInstances = useAssessmentHistory();
 
     useEffect(() => {
-        console.log("testInstances", testInstances);
-    }, [testInstances]);
+        console.log("assessmentInstances", assessmentInstances);
+    }, [assessmentInstances]);
 
     return (
         <MainLayout>

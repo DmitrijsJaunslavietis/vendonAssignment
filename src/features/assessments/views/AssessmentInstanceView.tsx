@@ -1,28 +1,28 @@
-import { AnswerButton } from "../../components/AnswerButton";
-import { Button } from "../../components/Button";
-import type { Question } from "../../types/test.types";
+import { AnswerButton } from "../../../components/AnswerButton";
+import { Button } from "../../../components/Button";
+import type { Question } from "../../../types/test.types";
 
-interface TestInstanceProps {
+interface AssessmentInstanceViewProps {
     questions: Question[];
     questionIndex: number;
     setQuestionIndex: (index: number) => void;
     selectedAnswer: number | undefined;
     setSelectedAnswer: (answer: number | undefined) => void;
     submitAnswerHandle: () => void;
-    submitTestHandle: () => void;
+    submitAssessmentHandle: () => void;
     ratio: number;
 }
 
-export const TestInstance = ({
+export const AssessmentInstanceView = ({
     questions,
     questionIndex,
     setQuestionIndex,
     selectedAnswer,
     setSelectedAnswer,
     submitAnswerHandle,
-    submitTestHandle,
+    submitAssessmentHandle,
     ratio
-}: TestInstanceProps) => {
+}: AssessmentInstanceViewProps) => {
 
     return (
         <div className="mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
@@ -51,7 +51,7 @@ export const TestInstance = ({
                             submitAnswerHandle();
                             setQuestionIndex(questionIndex + 1);
                         } else {
-                            submitTestHandle();
+                            submitAssessmentHandle();
                         }
                     }}
                     disabled={selectedAnswer === undefined}

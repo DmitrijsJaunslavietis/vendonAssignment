@@ -1,14 +1,14 @@
-interface EndTestViewProps {
+interface EndAssessmentViewProps {
     user: string | undefined;
     totalQuestions: number;
     correctAnswers: number;
 }
 
-export const EndTestView = ({
+export const EndAssessmentView = ({
     user,
     totalQuestions,
     correctAnswers,
-}: EndTestViewProps) => {
+}: EndAssessmentViewProps) => {
     return (
         <div className="max-w-[600px] mx-auto mt-10 p-10 border border-gray-300 rounded shadow">
             <h1 data-testid="user-name" className="mb-4 text-3xl">

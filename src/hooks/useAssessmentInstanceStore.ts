@@ -1,29 +1,29 @@
 import { create } from "zustand";
-import type { CorrectAnswer, Question, TestInstance } from "../types/test.types";
+import type { CorrectAnswer, Question, AssessmentInstance } from "../types/test.types";
 
 
-interface TestInstanceStore {
-    currentInstance: TestInstance | undefined;
-    passedTestQuestions: number;
+interface useAssessmentInstanceStore {
+    currentInstance: AssessmentInstance | undefined;
+    passedAssessmentQuestions: number;
     actions: {
-        setCurrentInstance: (instance: TestInstance | undefined) => void;
+        setCurrentInstance: (instance: AssessmentInstance | undefined) => void;
         setQuestions: (questions: Question[]) => void;
         setAnswer: (questionId: number, answer: number) => void;
         setCorrectAnswers: (correctAnswers: CorrectAnswer[]) => void;
     },
 };
 
-//logic for managing the state of a test instance
-const useTestInstanceStore = create<TestInstanceStore>((set) => ({
+//logic for managing the state of a assessment instance
+const useAssessmentInstanceStore = create<useAssessmentInstanceStore>((set) => ({
     currentInstance: undefined,
-    passedTestQuestions: 0,
+    passedAssessmentQuestions: 0,
     actions: {
         setCurrentInstance: (instance) => {
             set(() => ({ currentInstance: instance }));
         },
         setQuestions: (questions) => {
             set((state) => ({
-                passedTestQuestions: 0,
+                passedAssessmentQuestions: 0,
                 currentInstance: state.currentInstance
                     ? { ...state.currentInstance, questions }
                     : undefined,
@@ -33,7 +33,7 @@ const useTestInstanceStore = create<TestInstanceStore>((set) => ({
         //answer is stored in current instances questions array question object as result
         setAnswer: (questionId, answer) => {
             set((state) => ({
-                passedTestQuestions: state.passedTestQuestions + 1,
+                passedAssessmentQuestions: state.passedAssessmentQuestions + 1,
                 currentInstance: state.currentInstance
                     ? {
                         ...state.currentInstance,
@@ -52,7 +52,7 @@ const useTestInstanceStore = create<TestInstanceStore>((set) => ({
                     : undefined
             }));
         },
-        //sets correct answers for questions in the end of the test
+        //sets correct answers for questions in the end of the assessment
         setCorrectAnswers: (correctAnswers) => {
             set((state) => ({
                 currentInstance: state.currentInstance
@@ -77,6 +77,6 @@ const useTestInstanceStore = create<TestInstanceStore>((set) => ({
     },
 }));
 
-export const useCurrentTestInstance = () => useTestInstanceStore((state) => state.currentInstance);
-export const usePassedTestQuestions = () => useTestInstanceStore((state) => state.passedTestQuestions);
-export const useTestInstanceActions = () => useTestInstanceStore((state) => state.actions);
+export const useCurrentAssessmentInstance = () => useAssessmentInstanceStore((state) => state.currentInstance);
+export const usePassedAssessmentQuestions = () => useAssessmentInstanceStore((state) => state.passedAssessmentQuestions);
+export const useAssessmentInstanceActions = () => useAssessmentInstanceStore((state) => state.actions);

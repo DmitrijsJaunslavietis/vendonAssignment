@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, vi, expect, test } from "vitest";
-import { TestInstance } from "./TestInstance";
-import type { Question } from "../../types/test.types";
+import { AssessmentInstanceView } from "./AssessmentInstanceView";
+import type { Question } from "../../../types/test.types";
 import { useState } from "react";
 
 const submitAnswerHandle = vi.fn();
-const submitTestHandle = vi.fn();
+const submitAssessmentHandle = vi.fn();
 
-describe("TestInstance", () => {
+describe("AssessmentInstance", () => {
     test("shows question, answers and Next question button", () => {
         renderPage();
         const questionElement = screen.getByTestId("question");
@@ -57,7 +57,7 @@ describe("TestInstance", () => {
         const submitButton = screen.getByTestId("submit-answer");
         fireEvent.click(submitButton);
         expect(submitAnswerHandle).toHaveBeenCalled();
-        expect(submitTestHandle).toHaveBeenCalled();
+        expect(submitAssessmentHandle).toHaveBeenCalled();
     });
 
     test("progress bar is shown", () => {
@@ -174,14 +174,14 @@ const renderPage = (lastPage: boolean = false) => {
         const ratio = (questionIndex + 1) / questions.length;
 
         return (
-            <TestInstance
+            <AssessmentInstanceView
                 questions={questions}
                 questionIndex={questionIndex}
                 setQuestionIndex={setQuestionIndex}
                 selectedAnswer={answer}
                 setSelectedAnswer={setAnswer}
                 submitAnswerHandle={submitAnswerHandle}
-                submitTestHandle={submitTestHandle}
+                submitAssessmentHandle={submitAssessmentHandle}
                 ratio={ratio}
             />
         );

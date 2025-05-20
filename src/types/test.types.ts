@@ -1,4 +1,4 @@
-export interface Test {
+export interface Assessment {
     id: number;
     name: string;
 }
@@ -14,10 +14,10 @@ export interface Answer {
     answer: string;
 }
 
-export interface TestInstance {
+export interface AssessmentInstance {
     id: string;
     user: string;
-    testId: number;
+    assessmentId: number;
     questions: Question[];
     finished: boolean;
 }
@@ -29,7 +29,7 @@ export interface UserAnswer {
 
 export interface UserTests {
     user: string;
-    testInstances: TestInstance[];
+    assessmentInstances: AssessmentInstance[];
 }
 
 export interface CorrectAnswer {

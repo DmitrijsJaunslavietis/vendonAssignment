@@ -1,54 +1,50 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import data from "../../mockTests/tests.json";
+import data from "../../../mockTests/tests.json";
 import { useNavigate } from "react-router";
-import type { Question } from "../../types/test.types";
-import {
-    useCurrentTestInstance,
-    usePassedTestQuestions,
-    useTestInstanceActions,
-} from "../../hooks/useTestInstanceStore";
-import { TestInstance } from "./TestInstance";
+import type { Question } from "../../../types/test.types";
+import { AssessmentInstanceView } from "../views/AssessmentInstanceView";
+import { useCurrentAssessmentInstance, usePassedAssessmentQuestions, useAssessmentInstanceActions } from "../../../hooks/useAssessmentInstanceStore";
 
-export const TestInstancePage = () => {
+export const AssessmentInstancePage = () => {
     const navigate = useNavigate();
-    const testInstance = useCurrentTestInstance();
-    const passedTestQuestions = usePassedTestQuestions();
+    const currentInstance = useCurrentAssessmentInstance();
+    const passedAssessmentQuestions = usePassedAssessmentQuestions();
     const { setQuestions, setAnswer, setCorrectAnswers } =
-        useTestInstanceActions();
+        useAssessmentInstanceActions();
     const [questionIndex, setQuestionIndex] = useState<number>(0);
     const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(
         undefined
     );
 
-    //getting questions from testInstance. useMemo is used to avoid unnecessary recalculations
+    //getting questions from currentInstance. useMemo is used to avoid unnecessary recalculations
     const questions = useMemo(
-        () => testInstance?.questions ?? [],
-        [testInstance]
+        () => currentInstance?.questions ?? [],
+        [currentInstance]
     );
     //ratio is used to show progress bar. useMemo is used to avoid unnecessary recalculations
     const ratio = useMemo(() => {
-        if (!testInstance) return 0;
-        const { questions } = testInstance;
-        return (passedTestQuestions + 1) / questions.length;
-    }, [passedTestQuestions, testInstance]);
+        if (!currentInstance) return 0;
+        const { questions } = currentInstance;
+        return (passedAssessmentQuestions + 1) / questions.length;
+    }, [passedAssessmentQuestions, currentInstance]);
 
-    //answer is set in testInstance store and removewd from local state, before next question is shown
+    //answer is set in currentInstance store and removewd from local state, before next question is shown
     const submitAnswerHandle = useCallback(() => {
-        if (selectedAnswer && testInstance) {
+        if (selectedAnswer && currentInstance) {
             setAnswer(questions[questionIndex].id, selectedAnswer);
             setSelectedAnswer(undefined);
         }
-    }, [questionIndex, selectedAnswer, setAnswer, testInstance, questions]);
+    }, [questionIndex, selectedAnswer, setAnswer, currentInstance, questions]);
 
-    //submitTestHandle is used to submit test and get correct answers from API
-    //correct answers goes to testInstance store, where they are used to calculate score
+    //submitAssessmentHandle is used to submit assessment and get correct answers from API
+    //correct answers goes to currentInstance store, where they are used to calculate score
     //if all goes well, user is redirected to end page
-    const submitTestHandle = useCallback(() => {
+    const submitAssessmentHandle = useCallback(() => {
         submitAnswerHandle();
-        const testId = testInstance?.testId;
+        const assessmentId = currentInstance?.assessmentId;
         //get correct answers from API
         const correctAnswers = data
-            .find((test) => test.id === testId)
+            .find((assessment) => assessment.id === assessmentId)
             ?.questions.map((question) => ({
                 correctAnswerId:
                     question.answers.find((answer) => answer.isCorrect)?.id ??
@@ -63,30 +59,30 @@ export const TestInstancePage = () => {
             return;
         }
         setCorrectAnswers(correctAnswers);
-        navigate(`/test-instance/end`);
+        navigate(`/assessment-instance/end`);
     }, [
         navigate,
         setCorrectAnswers,
-        testInstance,
+        currentInstance,
         submitAnswerHandle,
     ]);
 
-    //useEffect to fetch questions from API by testId
-    //questions are set in testInstance store, where they are used to show questions and answers
-    //if test is finished, user is redirected to previous page
+    //useEffect to fetch questions from API by assessmentId
+    //questions are set in currentInstance store, where they are used to show questions and answers
+    //if assessment is finished, user is redirected to previous page
     //answers dont have correct answer flag to prevent user from seeing them (for hackermans in dev tools)
     useEffect(() => {
         const fetchQuestions = () => {
-            if (!testInstance) return;
-            if (testInstance.finished) {
+            if (!currentInstance) return;
+            if (currentInstance.finished) {
                 navigate(-1);
                 return;
             }
-            const { testId } = testInstance;
-            // API call by testId start
+            const { assessmentId } = currentInstance;
+            // API call by assessmentId start
             let questionsWithAnswers: Question[] | [] = [];
             const questionsData = data.find(
-                (test) => test.id === testId
+                (assessment) => assessment.id === assessmentId
             )?.questions;
             if (questionsData) {
                 questionsWithAnswers = questionsData.map((question) => ({
@@ -98,7 +94,7 @@ export const TestInstancePage = () => {
                     })),
                 }));
             }
-            // API call by testId end
+            // API call by assessmentId end
 
             setQuestions(questionsWithAnswers);
         };
@@ -106,14 +102,14 @@ export const TestInstancePage = () => {
     }, []);
 
     return (
-        <TestInstance
+        <AssessmentInstanceView
             questions={questions}
             questionIndex={questionIndex}
             setQuestionIndex={setQuestionIndex}
             selectedAnswer={selectedAnswer}
             setSelectedAnswer={setSelectedAnswer}
             submitAnswerHandle={submitAnswerHandle}
-            submitTestHandle={submitTestHandle}
+            submitAssessmentHandle={submitAssessmentHandle}
             ratio={ratio}
         />
     );

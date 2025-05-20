@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, vi, expect, test } from "vitest";
-import { StartTestPage } from "./StartTestPage";
+import { StartAssessmentPage } from "./StartAssessmentPage";
 
 // Moke react-router navigate
 const mockedNavigate = vi.fn();
@@ -12,8 +12,8 @@ vi.mock("react-router", async () => {
     };
 });
 
-describe("StartTestPage", () => {
-    test("starts test when name and test are selected", () => {
+describe("StartAssessmentPage", () => {
+    test("starts assessment when name and test are selected", () => {
         renderPage();
         const nameInput = screen.getByTestId("nameinput");
         const testSelect = screen.getByTestId("testselect");
@@ -81,5 +81,5 @@ describe("StartTestPage", () => {
 });
 
 const renderPage = () => {
-    return render(<StartTestPage />);
+    return render(<StartAssessmentPage />);
 };
