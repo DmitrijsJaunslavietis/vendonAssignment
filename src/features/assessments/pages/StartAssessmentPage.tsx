@@ -52,13 +52,7 @@ export const StartAssessmentPage = () => {
         }
         setTimeout(() => setLoading(false), 1000); //imitating API call
         // API call end
-    }, [
-        navigate,
-        selectedAssessment,
-        setCurrentInstance,
-        setAssessmentInstances,
-        user,
-    ]);
+    }, [selectedAssessment, user, setCurrentInstance, setAssessmentInstances, resetPassedAssessmentQuestions, navigate]);
 
     //useEffect to set assessments from API - only name and id for select, user cannot see questions and answers yet (for hackermans in dev tools)
     useEffect(() => {
