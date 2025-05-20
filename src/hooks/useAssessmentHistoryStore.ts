@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AssessmentInstance } from "../types/test.types";
+import type { AssessmentInstance } from "../types/assessment.types";
 
 interface useAssessmentHistoryStore {
     assessmentInstances: AssessmentInstance[] | [];

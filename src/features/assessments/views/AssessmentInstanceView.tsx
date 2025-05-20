@@ -1,6 +1,6 @@
 import { AnswerButton } from "../../../components/AnswerButton";
 import { Button } from "../../../components/Button";
-import type { Question } from "../../../types/test.types";
+import type { Question } from "../../../types/assessment.types";
 
 interface AssessmentInstanceViewProps {
     questions: Question[];

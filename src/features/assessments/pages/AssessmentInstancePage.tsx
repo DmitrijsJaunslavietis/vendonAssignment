@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import data from "../../../mockAssessments/assessments.json";
 import { useNavigate } from "react-router";
-import type { Question } from "../../../types/test.types";
+import type { Question } from "../../../types/assessment.types";
 import { AssessmentInstanceView } from "../views/AssessmentInstanceView";
 import {
     useCurrentAssessmentInstance,

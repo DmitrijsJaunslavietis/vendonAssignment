@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { CorrectAnswer, AssessmentInstance } from "../types/test.types";
+import type { CorrectAnswer, AssessmentInstance } from "../types/assessment.types";
 
 interface useAssessmentInstanceStore {
     currentInstance: AssessmentInstance | undefined;

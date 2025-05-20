@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { useAssessmentHistoryStore } from "./useAssessmentHistoryStore";
-import type { AssessmentInstance } from "../types/test.types";
+import type { AssessmentInstance } from "../types/assessment.types";
 
 describe("useAssessmentsHistoryStore", () => {
     test("should have initial state", () => {

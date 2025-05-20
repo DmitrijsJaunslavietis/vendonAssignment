@@ -3,7 +3,7 @@ import { StartAssessmentPage } from "../features/assessments/pages/StartAssessme
 import { AssessmentInstancePage } from "../features/assessments/pages/AssessmentInstancePage";
 import { EndAssessmentPage } from "../features/assessments/pages/EndAssessmentPage";
 
-export const TestsRouter = () => {
+export const AssessmentRouter = () => {
     return (
         <Routes>
             <Route path="/" element={<StartAssessmentPage />} />

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, vi, expect, test } from "vitest";
 import { AssessmentInstanceView } from "./AssessmentInstanceView";
-import type { Question } from "../../../types/test.types";
+import type { Question } from "../../../types/assessment.types";
 import { useState } from "react";
 
 const submitAnswerHandle = vi.fn();

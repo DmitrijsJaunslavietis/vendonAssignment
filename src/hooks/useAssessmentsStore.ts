@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Assessment } from "../types/test.types";
+import type { Assessment } from "../types/assessment.types";
 
 interface useAssessmentsStore {
     assessments: Assessment[] | [];

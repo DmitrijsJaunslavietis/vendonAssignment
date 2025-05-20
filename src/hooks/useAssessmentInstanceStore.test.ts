@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { useAssessmentInstanceStore } from "./useAssessmentInstanceStore";
-import type { AssessmentInstance, Question } from "../types/test.types";
+import type { AssessmentInstance, Question } from "../types/assessment.types";
 
 describe("useAssessmentInstanceStore", () => {
     test("should set current instance", () => {

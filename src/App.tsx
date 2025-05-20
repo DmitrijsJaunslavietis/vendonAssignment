@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import "./App.css";
 import { useAssessmentHistory } from "./hooks/useAssessmentHistoryStore";
 import { MainLayout } from "./layouts/MainLayout";
-import { TestsRouter } from "./routers/TestsRouter";
+import { AssessmentRouter } from "./routers/AssessmentRouter";
 
 function App() {
     const assessmentInstances = useAssessmentHistory();
@@ -13,7 +13,7 @@ function App() {
 
     return (
         <MainLayout>
-            <TestsRouter />
+            <AssessmentRouter />
         </MainLayout>
     );
 }
